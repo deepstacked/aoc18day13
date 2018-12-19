@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "moment": "^2.22.2",
     "react": "^16.6.3",
+    "react-devtools": "^3.4.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-redux": "^6.0.0",
+    "react-scripts": "2.1.1",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -21,5 +28,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
