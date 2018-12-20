@@ -25,3 +25,56 @@
 .track-div {
   text-align: left;
 }
+
+.cDBlue {
+  fill: darkblue;  
+}
+.cDCyan {
+  fill: darkcyan;  
+}
+.cDGold {
+  fill: darkgoldenrod;  
+}
+.cDGreen {
+  fill: darkgreen;
+}
+.cDKhaki {
+  fill: darkkhaki
+}
+.cDOrange {
+  fill: darkorange;
+}
+.cDOrchid {
+  fill: darkorchid;
+}
+.cDRed {
+  fill: darkred;
+}
+.cDSGreen {
+  fill: darkseagreen;
+}
+.cDSBlue {
+  fill: darkslateblue;
+}
+.cDSGray {
+  fill: darkslategray
+}
+.cDTurquoise{
+  fill: darkturquoise;
+}
+.cDViolet {
+  fill: darkviolet;
+}
+.cDSkyBlue {
+  fill: deepskyblue;
+}
+.cDPink {
+  fill: deeppink;
+}
+.cGreenYellow {
+  fill: greenyellow;
+}
+.cOliveDrab {
+  fill: olivedrab;
+}
+

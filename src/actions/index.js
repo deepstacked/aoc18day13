@@ -102,6 +102,7 @@ function updateOccupiedTrackLetter(trackLetter) {
 function createCarts(trackInput){
     let yIdx = 0;
     let carts = [];
+    let colorize = 0;
     trackInput.forEach(element => {
         let x = 0;
         let y = yIdx++;
@@ -128,12 +129,11 @@ function createCarts(trackInput){
             }
            
             if(newCart === true){
-                carts.push({id: common.generateUniqueId(), x: x++, y: y, display: trackLetter, direction: direction, nextTurn: common.TURNORDER[0]})
+                carts.push({id: common.generateUniqueId(), x: x++, y: y, display: trackLetter, direction: direction, nextTurn: common.TURNORDER[0], css: common.CARTCOLORS[colorize++]});
             } else { 
                 x++;                
-            }            
+            }
         })
-        
     })
     return carts;
 }
@@ -158,7 +158,7 @@ function findOccupiedTracks(tracks, carts){
 
 function doOneTurn(tracks, carts){
     // need to mutate carts but do not want to change original until at the end so state is updated properly.    
-    let movedCarts = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, display: cart.display, direction: cart.direction, nextTurn: cart.nextTurn}} );
+    let movedCarts = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, display: cart.display, direction: cart.direction, nextTurn: cart.nextTurn, css: cart.css}} );
     let collisions = [];
 
     movedCarts.sort(sortCarts);    
@@ -166,7 +166,7 @@ function doOneTurn(tracks, carts){
     for (let cartIdx = 0; cartIdx < carts.length; cartIdx++) {
         let cart = movedCarts[cartIdx];
         let occupiedTracks = findOccupiedTracks(tracks, movedCarts);
-        let { direction, x, y, nextTurn, display } = cart;
+        let { direction, x, y, nextTurn, display} = cart;
         let moveInstruction = common.getMoveInstruction(direction);
         let nextTrack = tracks[y+moveInstruction.y][x+moveInstruction.x];
         if(nextTrack.track === true){
@@ -196,7 +196,7 @@ function doOneTurn(tracks, carts){
                 cart.y = nextTrack.y;
                 cart.display = display;
                 cart.direction = direction;
-                cart.nextTurn = nextTurn;
+                cart.nextTurn = nextTurn;                
             }                        
         } else {
             // some error. Has to be a track.
@@ -250,3 +250,11 @@ export function stopTimer(timer){
     }
 }
 
+export function resetCartsAndCollisions() {    
+    return{
+        type: actionTypes.RESET_CARTS_COLLISIONS,
+        carts: createCarts(initialTracks),
+        collisions: [],
+        turn: 0
+    }
+}

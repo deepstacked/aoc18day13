@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as common from '../constants';
 
-function makeCart(cart){    
+function makeCart(cart){
     let newCart = false;
     let whichCart = '';
-    let {x,  y, display } = cart;
+    let {x,  y, display, css } = cart;
     if(display === common.CARTDIRECTION.up){
         newCart = true;
         whichCart = '#cartup';
@@ -22,9 +22,8 @@ function makeCart(cart){
         newCart = true;
         whichCart = '#cartright';
     }
-
-    if(newCart === true){
-        return <use key={common.generateUniqueId()} href={whichCart} x={(x+1) * 10} y={(y+1) * 10} />
+    if(newCart === true){        
+        return <use key={common.generateUniqueId()} className={css} href={whichCart} x={(x+1) * 10} y={(y+1) * 10} />
     }
 }
 
@@ -35,22 +34,22 @@ class Carts extends Component {
     }
 
     render () {
-        let { carts } = this.props;
+        let { carts } = this.props;        
         return (
             <svg id="carts" key={common.generateUniqueId()}>
-                <g id='cartup' fill='green'>
+                <g id='cartup' >
                     <polygon points='3 4, 5 2, 7 4'/>      
                     <rect x='3' y='4' height='4' width='4' />    
                 </g>
-                  <g id='cartdown' fill='green'>
+                  <g id='cartdown' >
                     <polygon points='5 8, 3 6, 7 6'/> 
                     <rect x='3' y='2' height='4' width='4' />
                 </g>
-                  <g id='cartleft' fill='green'>                
+                  <g id='cartleft' >                
                     <polygon points='2 5, 4 7, 4 3'/> 
                     <rect x='4' y='3' height='4' width='4' />
                 </g>
-                <g id='cartright' fill='green'>
+                <g id='cartright' >
                     <polygon points='8 5, 6 7, 6 3'/> 
                     <rect x='2' y='3' height='4' width='4' />   
                 </g>
