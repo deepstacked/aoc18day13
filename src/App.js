@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 import Tracks from './components/tracks';
+import Carts from './components/carts';
 import { loadInitialData, advanceCarts }  from './actions';
 
 class App extends Component {
@@ -22,7 +23,10 @@ class App extends Component {
     return (
       <div className="App">
         <button type="button" onClick={this.onAdvanceRun}>Click for 1 turn</button>
-        <Tracks tracks = {this.props.tracks} carts = {this.props.carts} turn = {this.props.turn} />
+        <svg id="overallApp" key="overallApp" viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
+            <Tracks />
+            <Carts carts = {this.props.carts} turn = {this.props.turn} />
+        </svg>
       </div>
     );
   }

@@ -27,11 +27,11 @@ function makeTracks(trackInput){
         [...element].forEach(char => {
             tracks[y].push(x);
             let trackLetter = char;
-            let occupied, intersection;
+            let intersection;
             let track = true;
             let tracksection = '';
 
-            ({ trackLetter, occupied } = checkOccupied(trackLetter, occupied));
+            trackLetter = updateOccupiedTrackLetter(trackLetter);
 
             if(trackLetter === ' '){
                 track = false;                
@@ -49,7 +49,7 @@ function makeTracks(trackInput){
 
             ({ tracksection, sawbcl, sawtcl } = calculateCorners(trackLetter, tracksection, sawbcl, sawtcl));
             
-            let trackPiece = {id: common.generateUniqueId(), x: x, y: y, display: trackLetter, occupied: occupied, intersection: intersection, track: track, tracksection: tracksection};
+            let trackPiece = {id: common.generateUniqueId(), x: x, y: y, display: trackLetter, intersection: intersection, track: track, tracksection: tracksection};
             tracks[y][x]= (trackPiece)
             x++
                         
@@ -93,16 +93,14 @@ function calculateCorners(trackLetter, tracksection, sawbcl, sawtcl) {
 // if the character is a cart we still need to figure out 
 // the underlying track piece so when the cart moves we can 
 // know what track it is
-function checkOccupied(trackLetter, occupied) {
+function updateOccupiedTrackLetter(trackLetter) {
     if (trackLetter === '>' || trackLetter === '<') {
         trackLetter = '-';
-        occupied = true;
     }
     if (trackLetter === '^' || trackLetter === 'v') {
         trackLetter = '|';
-        occupied = true;
     }
-    return { trackLetter, occupied };
+    return trackLetter;
 }
 
 function createCarts(trackInput){
@@ -155,24 +153,37 @@ function sortCarts(a, b){
     return 0;    
 }
 
+function findOccupiedTracks(tracks, carts){
+    let filteredTracks = carts.map(cart => {
+        return tracks[cart.y][cart.x]       
+    })
+    return filteredTracks.map(track => {return {x: track.x, y: track.y}});
+}
+
 function doOneTurn(tracks, carts){   
     carts.sort(sortCarts);
     
+    let occupiedTracks = findOccupiedTracks(tracks, carts);
     let movedCarts = [];
     movedCarts = carts.map(cart => {
         let { id, direction, x, y, nextTurn, display } = cart;        
-        let currentTrack = tracks[y][x];
         let moveInstruction = common.getMoveInstruction(direction);
         let nextTrack = tracks[y+moveInstruction.y][x+moveInstruction.x];
-
+        
         if(nextTrack.track === true){
-            currentTrack.occupied = false;
-            if(nextTrack.occupied === true){
+            let isOccupied = false;           
+            for (let x = 0; x < occupiedTracks.length; x++) {
+                let occupiedTrack = occupiedTracks[x];
+                if(nextTrack.x === occupiedTrack.x && nextTrack.y === occupiedTrack.y){
+                    isOccupied = true;
+                    break;
+                }                
+            }
+            if(isOccupied === true){
                 console.log(`collison at (${nextTrack.x},${nextTrack.y})`);
                 throw new common.CartCollisionException(x, y);
             }
-
-            nextTrack.occupied = true;
+            
             if(nextTrack.intersection === true){
                 direction = common.changeCartDirection(direction, nextTurn);
                 display = direction;
