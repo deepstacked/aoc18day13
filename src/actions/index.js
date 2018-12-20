@@ -233,3 +233,20 @@ export function advanceCarts(tracks, carts){
     }
 }
 
+export function startTimer(timer){
+    return {
+        type: actionTypes.START_TIMER_RUN,
+        timer: timer,
+        running: true
+    }
+}
+
+export function stopTimer(timer){
+    if(timer !== 0) clearInterval(timer);
+    return {
+        type: actionTypes.STOP_TIMER_RUN,
+        timer: 0,
+        running: false
+    }
+}
+

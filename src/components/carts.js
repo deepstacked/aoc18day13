@@ -36,33 +36,31 @@ class Carts extends Component {
 
     render () {
         let { carts } = this.props;
-    return (
-        <svg id="carts" key={common.generateUniqueId()} viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
-            <g id='cartdown' fill='blue'>
-                <polygon points='5 7.5, 4 6, 6 6'/> 
-                <rect x='4' y='2' height='4' width='2' />
-            </g>
-            <g id='cartright' fill='blue'>
-                <polygon points='7.5 5, 6 6, 6 4'/> 
-                <rect x='2' y='4' height='2' width='4' />   
-            </g>
-            <g id='cartleft' fill='blue'>                
-                <polygon points='2.5 5, 4 6, 4 4'/> 
-                <rect x='4' y='4' height='2' width='4' />
-            </g>
-            <g id='cartup' fill='blue'>
-                <polygon points='4 4, 5 2.5, 6 4'/>      
-                <rect x='4' y='4' height='4' width='2' />    
-            </g>
-            <rect x='0' y='0' height='10' width='10' />
-          {
-              carts.map(cart => {return makeCart(cart)})
-          }
-    
-    </svg>
-    )
-        }
-    
+        return (
+            <svg id="carts" key={common.generateUniqueId()} viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
+                <g id='cartdown' fill='blue'>
+                    <polygon points='5 7.5, 4 6, 6 6'/> 
+                    <rect x='4' y='2' height='4' width='2' />
+                </g>
+                <g id='cartright' fill='blue'>
+                    <polygon points='7.5 5, 6 6, 6 4'/> 
+                    <rect x='2' y='4' height='2' width='4' />   
+                </g>
+                <g id='cartleft' fill='blue'>                
+                    <polygon points='2.5 5, 4 6, 4 4'/> 
+                    <rect x='4' y='4' height='2' width='4' />
+                </g>
+                <g id='cartup' fill='blue'>
+                    <polygon points='4 4, 5 2.5, 6 4'/>      
+                    <rect x='4' y='4' height='4' width='2' />    
+                </g>
+                <rect x='0' y='0' height='10' width='10' fill="white"/>
+            {
+                carts.map(cart => {return makeCart(cart)})
+            }
+            </svg>
+        )
+    }    
 }
 
 function mapStateToProps(state){  
