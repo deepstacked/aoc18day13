@@ -10,6 +10,7 @@ import * as input from '../constants/input';
     "\\-+-/  \\-+--/ ",
     "  \\------/ ",
 ];*/
+
 var initialTracks = input.initialTracks;
 
 var _turn = 0;
@@ -51,14 +52,11 @@ function makeTracks(trackInput){
             
             let trackPiece = {id: common.generateUniqueId(), x: x, y: y, display: trackLetter, intersection: intersection, track: track, tracksection: tracksection};
             tracks[y][x]= (trackPiece)
-            x++
-                        
-        })
-        
+            x++                        
+        })        
     })
     return tracks;
 }
-
 
 // because the same characters are used for the top left/bottom right 
 // and then bottom left/top right we need to figure out which it is.
@@ -87,8 +85,6 @@ function calculateCorners(trackLetter, tracksection, sawbcl, sawtcl) {
     }
     return { tracksection, sawbcl, sawtcl };
 }
-
-
 
 // if the character is a cart we still need to figure out 
 // the underlying track piece so when the cart moves we can 
@@ -160,16 +156,19 @@ function findOccupiedTracks(tracks, carts){
     return filteredTracks.map(track => {return {x: track.x, y: track.y}});
 }
 
-function doOneTurn(tracks, carts){   
-    carts.sort(sortCarts);
-    
-    let occupiedTracks = findOccupiedTracks(tracks, carts);
-    let movedCarts = [];
-    movedCarts = carts.map(cart => {
-        let { id, direction, x, y, nextTurn, display } = cart;        
+function doOneTurn(tracks, carts){
+    // need to mutate carts but do not want to change original until at the end so state is updated properly.    
+    let movedCarts = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, display: cart.display, direction: cart.direction, nextTurn: cart.nextTurn}} );
+    let collisions = [];
+
+    movedCarts.sort(sortCarts);    
+
+    for (let cartIdx = 0; cartIdx < carts.length; cartIdx++) {
+        let cart = movedCarts[cartIdx];
+        let occupiedTracks = findOccupiedTracks(tracks, movedCarts);
+        let { direction, x, y, nextTurn, display } = cart;
         let moveInstruction = common.getMoveInstruction(direction);
         let nextTrack = tracks[y+moveInstruction.y][x+moveInstruction.x];
-        
         if(nextTrack.track === true){
             let isOccupied = false;           
             for (let x = 0; x < occupiedTracks.length; x++) {
@@ -180,28 +179,31 @@ function doOneTurn(tracks, carts){
                 }                
             }
             if(isOccupied === true){
-                console.log(`collison at (${nextTrack.x},${nextTrack.y})`);
-                throw new common.CartCollisionException(x, y);
-            }
-            
-            if(nextTrack.intersection === true){
-                direction = common.changeCartDirection(direction, nextTurn);
-                display = direction;
-                nextTurn = common.getNextTurn(nextTurn);
-            }
-            if(nextTrack.tracksection.corner === true){
-                direction = common.makeCornerTurn(direction, nextTrack.tracksection);
-                display = direction;
-            }
-            
-            return {id: id, x: nextTrack.x, y:nextTrack.y, display:display, direction: direction, nextTurn: nextTurn}
+                collisions.push({id: common.generateUniqueId(), x: nextTrack.x, y: nextTrack.y, cartid: cart.id});
+                break;
+            } else {
+                if(nextTrack.intersection === true){
+                    direction = common.changeCartDirection(direction, nextTurn);
+                    display = direction;
+                    nextTurn = common.getNextTurn(nextTurn);
+                }
+                if(nextTrack.tracksection.corner === true){
+                    direction = common.makeCornerTurn(direction, nextTrack.tracksection);
+                    display = direction;
+                }
+                
+                cart.x = nextTrack.x;
+                cart.y = nextTrack.y;
+                cart.display = display;
+                cart.direction = direction;
+                cart.nextTurn = nextTurn;
+            }                        
+        } else {
+            // some error. Has to be a track.
         }
-        
-        return cart;
-        
-    })
+    }
 
-    return movedCarts;
+    return {movedCarts, collisions};
 }
 
 export function loadInitialData(){    
@@ -214,22 +216,20 @@ export function loadInitialData(){
 }
 
 export function advanceCarts(tracks, carts){
-    try {        
-        var movedCarts = doOneTurn(tracks, carts);
-    } catch (e) {
-        if (e instanceof common.CartCollisionException) {
-            return {
-                type: actionTypes.WARN_ABOUT_COLLISION,
-                collison: true,
-                collisionMsg: e.message
-            }
+    var { movedCarts, collisions} = doOneTurn(tracks, carts);
+    
+    if(collisions.length > 0) {
+        return {
+            type: actionTypes.WARN_ABOUT_COLLISION,
+            collisions: collisions,
+            carts: movedCarts
         }
-    }
-
-    return {
-        type: actionTypes.DO_ONE_TURN,
-        carts: movedCarts,
-        turn: _turn++
+    } else {
+        return {
+            type: actionTypes.DO_ONE_TURN,
+            carts: movedCarts,             
+            turn: _turn++
+        }
     }
 }
 

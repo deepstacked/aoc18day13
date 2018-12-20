@@ -26,7 +26,7 @@ class Tracks extends Component {
         let {tracks} = this.props;
         let y = 0;
     return (
-        <svg id="tracks" key={common.generateUniqueId()} viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
+        <svg id="tracks" key={common.generateUniqueId()} >
             <path id='topcornerleft' d='M5,10 A 5 5 180 0 1 10,5' fill='none' stroke='sienna' strokeWidth='1'/>
             <line id='horizontal' x1='0' y1='5' x2='10' y2='5' stroke='sienna'/>
             <path id='topcornerright' d='M0,5 A 5 5 180 0 1 5,10' fill='none' stroke='sienna' strokeWidth='1'/>  
