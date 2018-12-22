@@ -18,14 +18,10 @@ function sortCartInfo(a, b){
 }
 class CartInfos extends Component {
 
-    componentDidUpdate(prevProps){
-        
-    }
-
     render () {
         let { carts } = this.props;
         let cartNumber = 1;
-        let cartInfos = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, direction: cart.direction, nextTurn: cart.nextTurn, css: cart.css, status: cart.status}});
+        let cartInfos = carts.map(cart => {return cart});
         cartInfos.sort(sortCartInfo);
 
         return cartInfos.map(cartInfo => {return makeCartInfo(cartInfo, cartNumber++)});
