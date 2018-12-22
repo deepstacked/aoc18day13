@@ -2,15 +2,6 @@ import * as actionTypes from '../actiontypes';
 import * as common from '../constants';
 import * as input from '../constants/input';
 
-/*var initialTracks = [
-    "/->-\\ ",
-    "|   |  /----\\ ",
-    "| /-+--+-\\  |",
-    "| | |  | v  |",
-    "\\-+-/  \\-+--/ ",
-    "  \\------/ ",
-];*/
-
 var initialTracks = input.initialTracks;
 
 var _turn = 0;
@@ -28,7 +19,7 @@ function makeTracks(trackInput){
         [...element].forEach(char => {
             tracks[y].push(x);
             let trackLetter = char;
-            let intersection;
+            let intersection = false;
             let track = true;
             let tracksection = '';
 
@@ -67,18 +58,15 @@ function calculateCorners(trackLetter, tracksection, sawbcl, sawtcl) {
         if (sawbcl === true) {
             tracksection = common.TRACK_SECTIONS.brc;
             sawbcl = false;
-        }
-        else {
+        } else {
             tracksection = common.TRACK_SECTIONS.tlc;
             sawtcl = true;
         }
-    }
-    if (trackLetter === '\\') {
+    } else if (trackLetter === '\\') {
         if (sawtcl === true) {
             tracksection = common.TRACK_SECTIONS.trc;
             sawtcl = false;
-        }
-        else {
+        } else {
             tracksection = common.TRACK_SECTIONS.blc;
             sawbcl = true;
         }
@@ -90,13 +78,16 @@ function calculateCorners(trackLetter, tracksection, sawbcl, sawtcl) {
 // the underlying track piece so when the cart moves we can 
 // know what track it is
 function updateOccupiedTrackLetter(trackLetter) {
-    if (trackLetter === '>' || trackLetter === '<') {
-        trackLetter = '-';
+    switch(trackLetter){
+        case common.CARTDIRECTION.right:
+        case common.CARTDIRECTION.left:
+            return common.TRACK_SECTIONS.horizontal.display;
+        case common.CARTDIRECTION.up:
+        case common.CARTDIRECTION.down:
+            return common.TRACK_SECTIONS.vertical.display;
+        default:
+            return trackLetter
     }
-    if (trackLetter === '^' || trackLetter === 'v') {
-        trackLetter = '|';
-    }
-    return trackLetter;
 }
 
 function createCarts(trackInput){
@@ -129,7 +120,7 @@ function createCarts(trackInput){
             }
            
             if(newCart === true){
-                carts.push({id: common.generateUniqueId(), x: x++, y: y, display: trackLetter, direction: direction, nextTurn: common.TURNORDER[0], css: common.CARTCOLORS[colorize++]});
+                carts.push({id: common.generateUniqueId(), x: x++, y: y, direction: direction, nextTurn: common.TURNORDER[0], css: common.CARTCOLORS[colorize++], status: common.CARTSTATUS.alive});
             } else { 
                 x++;                
             }
@@ -142,87 +133,110 @@ function createCarts(trackInput){
 // we need carts that are lower Y to go first. If the y is the 
 // same then look at the X coord
 function sortCarts(a, b){    
+    if(a.y < b.y) return -1;
     if(a.y > b.y) return 1;
-    if(a.y < b.y) return -1;    
-    if(a.y === b.y && a.x < b.x) return -1;
-    if(a.y === b.y && a.x > b.x ) return 1;
+        
+    if(a.x < b.x) return -1;
+    if(a.x > b.x ) return 1;
     return 0;    
 }
 
 function findOccupiedTracks(tracks, carts){
-    let filteredTracks = carts.map(cart => {
-        return tracks[cart.y][cart.x]       
-    })
-    return filteredTracks.map(track => {return {x: track.x, y: track.y}});
+    let cartsleft = cartsAlive(carts);
+    if(cartsleft.length > 0){
+        return cartsleft.map(cart => {let track = tracks[cart.y][cart.x]; return {x: track.x, y: track.y} });       
+    }
+    return {x: 0, y: 0};
 }
 
-function doOneTurn(tracks, carts){
-    // need to mutate carts but do not want to change original until at the end so state is updated properly.    
-    let movedCarts = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, display: cart.display, direction: cart.direction, nextTurn: cart.nextTurn, css: cart.css}} );
-    let collisions = [];
+function cartsAlive(carts){
+    return carts.filter(cart => cart.status === common.CARTSTATUS.alive).length;
+}
+function cartsAliveCount(carts){
+    return cartsAlive(carts).length;
+}
 
+function isTrackOccupiedatXY(movedCarts, x, y){
+    let cartIdx = movedCarts.findIndex(cart => cart.x === x && cart.y === y && cart.status === common.CARTSTATUS.alive);    
+    return  cartIdx;
+}
+
+function doOneTurn(tracks, carts, collisions, crashoption){    
+    //let movedCarts = carts.map(cart => {return {id: cart.id, x: cart.x, y: cart.y, direction: cart.direction, nextTurn: cart.nextTurn, css: cart.css, status: cart.status}} );    
+    let movedCarts = carts.map(cart => {return cart});    
+    let newcollisions = collisions.map(collision => {return collision})
+    
     movedCarts.sort(sortCarts);    
 
-    for (let cartIdx = 0; cartIdx < carts.length; cartIdx++) {
+    for (let cartIdx = 0; cartIdx < movedCarts.length; cartIdx++) {
         let cart = movedCarts[cartIdx];
-        let occupiedTracks = findOccupiedTracks(tracks, movedCarts);
-        let { direction, x, y, nextTurn, display} = cart;
+        if(cart.status !== common.CARTSTATUS.alive) continue;
+        
+        let { direction, x, y, nextTurn} = cart;
         let moveInstruction = common.getMoveInstruction(direction);
         let nextTrack = tracks[y+moveInstruction.y][x+moveInstruction.x];
+
         if(nextTrack.track === true){
-            let isOccupied = false;           
-            for (let x = 0; x < occupiedTracks.length; x++) {
-                let occupiedTrack = occupiedTracks[x];
-                if(nextTrack.x === occupiedTrack.x && nextTrack.y === occupiedTrack.y){
-                    isOccupied = true;
+
+            let otherCartIdx = isTrackOccupiedatXY(movedCarts, nextTrack.x, nextTrack.y);
+            let occupied = otherCartIdx !== -1;
+            if(occupied){
+                cart.status = common.CARTSTATUS.crashed;
+                console.log(newcollisions, nextTrack);
+                newcollisions.push({id: common.generateUniqueId(), x: nextTrack.x, y: nextTrack.y, cartid: cart.id});
+                if(crashoption === 'first'){
                     break;
-                }                
-            }
-            if(isOccupied === true){
-                collisions.push({id: common.generateUniqueId(), x: nextTrack.x, y: nextTrack.y, cartid: cart.id});
-                break;
+                } else {
+                    movedCarts[otherCartIdx].status = common.CARTSTATUS.crashed;
+                }
+                
             } else {
                 if(nextTrack.intersection === true){
                     direction = common.changeCartDirection(direction, nextTurn);
-                    display = direction;
+                    
                     nextTurn = common.getNextTurn(nextTurn);
                 }
                 if(nextTrack.tracksection.corner === true){
                     direction = common.makeCornerTurn(direction, nextTrack.tracksection);
-                    display = direction;
+                    
                 }
                 
                 cart.x = nextTrack.x;
-                cart.y = nextTrack.y;
-                cart.display = display;
+                cart.y = nextTrack.y;                
                 cart.direction = direction;
                 cart.nextTurn = nextTurn;                
-            }                        
+            }
+        
         } else {
             // some error. Has to be a track.
+            console.log("Next Track not found", cart, moveInstruction);            
         }
     }
 
-    return {movedCarts, collisions};
+    return {movedCarts, newcollisions};
 }
 
-export function loadInitialData(){    
+export function loadInitialData(){
+    var carts = createCarts(initialTracks)
     return {
         type: actionTypes.LOAD_INITIAL_DATA,
         tracks: makeTracks(initialTracks),
-        carts: createCarts(initialTracks),
+        carts: carts,
+        cartsalive: carts.length,
         turn: _turn++   
     }
 }
 
-export function advanceCarts(tracks, carts){
-    var { movedCarts, collisions} = doOneTurn(tracks, carts);
-    
-    if(collisions.length > 0) {
+export function advanceCarts(tracks, carts, collisions, crashoption){
+    let {movedCarts, newcollisions} = doOneTurn(tracks, carts, collisions, crashoption);
+    let cartsalive = cartsAliveCount(movedCarts);
+    if(newcollisions.length > 0 || cartsalive === 1) {
         return {
             type: actionTypes.WARN_ABOUT_COLLISION,
-            collisions: collisions,
-            carts: movedCarts
+            collisions: newcollisions,
+            carts: movedCarts,
+            cartsalive: cartsalive,
+            turn: _turn++
         }
     } else {
         return {
@@ -233,11 +247,12 @@ export function advanceCarts(tracks, carts){
     }
 }
 
-export function startTimer(timer){
+export function startTimer(timer, crashoption){
     return {
         type: actionTypes.START_TIMER_RUN,
         timer: timer,
-        running: true
+        running: true,
+        crashoption: crashoption
     }
 }
 
@@ -245,16 +260,19 @@ export function stopTimer(timer){
     if(timer !== 0) clearInterval(timer);
     return {
         type: actionTypes.STOP_TIMER_RUN,
-        timer: 0,
+        timer: 0,        
         running: false
     }
 }
 
 export function resetCartsAndCollisions() {    
+    var carts = createCarts(initialTracks);
+    
     return{
         type: actionTypes.RESET_CARTS_COLLISIONS,
-        carts: createCarts(initialTracks),
-        collisions: [],
+        carts: carts,
+        cartsalive: carts.length,
+        collisions: [],        
         turn: 0
     }
 }

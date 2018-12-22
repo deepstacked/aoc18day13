@@ -1,16 +1,15 @@
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { devToolsEnhancer } from 'redux-devtools-extension'
 import { Provider } from 'react-redux'
 import {createStore} from 'redux';
 import App from './App';
 
-import carts from './reducers';
+import cartsReducer from './reducers';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(carts, devToolsEnhancer());
+const store = createStore(cartsReducer);
 
 ReactDOM.render(
     <Provider store={store} >

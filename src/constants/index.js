@@ -9,7 +9,7 @@ export const TRACK_SECTIONS = {
     brc:{svg: '#bottomcornerright', display: '/', corner: true},
     intersection:{svg: '#intersection', display: '+', corner: false}    
 }
-
+export const CARTSTATUS = {alive: 'alive', crashed: 'crashed'};
 export const CARTCOLORS = ['cDBlue','cDCyan','cDGold','cDGreen','cDKhaki','cDOrange','cDOrchid','cDRed','cDSGreen','cDSBlue','cDSGray','cDTurquois','cDViolet','cDSkyBlue','cDPink','cGreenYellow','cOliveDrab']
 const MOVEINSTRUCTIONS = [
     {

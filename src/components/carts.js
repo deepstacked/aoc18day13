@@ -5,23 +5,24 @@ import * as common from '../constants';
 function makeCart(cart){
     let newCart = false;
     let whichCart = '';
-    let {x,  y, display, css } = cart;
-    if(display === common.CARTDIRECTION.up){
+    let {x,  y, direction, css} = cart;    
+    if(direction === common.CARTDIRECTION.up){
         newCart = true;
         whichCart = '#cartup';
     }
-    if(display === common.CARTDIRECTION.down){
+    if(direction === common.CARTDIRECTION.down){
         newCart = true;
         whichCart = '#cartdown';
     }
-    if(display === common.CARTDIRECTION.left){
+    if(direction === common.CARTDIRECTION.left){
         newCart = true;
         whichCart = '#cartleft';
     }
-    if(display === common.CARTDIRECTION.right){
+    if(direction === common.CARTDIRECTION.right){
         newCart = true;
         whichCart = '#cartright';
     }
+
     if(newCart === true){        
         return <use key={common.generateUniqueId()} className={css} href={whichCart} x={(x+1) * 10} y={(y+1) * 10} />
     }
@@ -30,30 +31,29 @@ function makeCart(cart){
 class Carts extends Component {
 
     componentDidUpdate(prevProps){
-        console.log('Carts::componentDidUpdate', prevProps, this.props);
+        
     }
 
     render () {
         let { carts } = this.props;        
-        return (
-            <svg id="carts" key={common.generateUniqueId()}>
-                <g id='cartup' >
-                    <polygon points='3 4, 5 2, 7 4'/>      
-                    <rect x='3' y='4' height='4' width='4' />    
+        return (            
+            <svg id="svgcarts" key={common.generateUniqueId()}>
+                <g id='cartup'>           
+                    <rect x='1' y='1.25' height='8.75' width='8' />
+                    <rect x='1' y='0' height='0.5' width='8' />
                 </g>
-                  <g id='cartdown' >
-                    <polygon points='5 8, 3 6, 7 6'/> 
-                    <rect x='3' y='2' height='4' width='4' />
+                <g id='cartdown'>
+                    <rect x='1' y='0' height='8.75' width='8' />
+                    <rect x='1' y='9.5' height='0.5' width='8' />
                 </g>
-                  <g id='cartleft' >                
-                    <polygon points='2 5, 4 7, 4 3'/> 
-                    <rect x='4' y='3' height='4' width='4' />
+                <g id='cartleft'>                
+                    <rect x='1.25' y='1' height='8' width='8.75' />
+                    <rect x='0' y='1' height='8' width='0.5' />      
                 </g>
-                <g id='cartright' >
-                    <polygon points='8 5, 6 7, 6 3'/> 
-                    <rect x='2' y='3' height='4' width='4' />   
-                </g>
-                <rect x='0' y='0' height='10' width='10' fill="white"/>
+                <g id='cartright'>
+                    <rect x='0' y='1' height='8' width='8.75' />
+                    <rect x='9.5' y='1' height='8' width='0.5' />  
+                </g>                
             {
                 carts.map(cart => {return makeCart(cart)})
             }
@@ -62,9 +62,10 @@ class Carts extends Component {
     }    
 }
 
-function mapStateToProps(state){  
-    return {      
-      carts: state.carts
+function mapStateToProps(state){
+    const carts = state.carts.filter(cart => cart.status === common.CARTSTATUS.alive);
+    return {
+      carts: carts
     };
   }
 export default connect(mapStateToProps)(Carts);

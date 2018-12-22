@@ -26,55 +26,78 @@
   text-align: left;
 }
 
+.strokeRed {
+  stroke: firebrick;
+}
+.tSienna {
+  stroke: sienna;
+}
 .cDBlue {
-  fill: darkblue;  
+  fill: darkblue;
+  background-color: darkblue;
 }
 .cDCyan {
-  fill: darkcyan;  
+  fill: darkcyan;
+  background-color: darkcyan;
 }
 .cDGold {
-  fill: darkgoldenrod;  
+  fill: darkgoldenrod;
+  background-color: darkgoldenrod;
 }
 .cDGreen {
   fill: darkgreen;
+  background-color: darkgreen;
 }
 .cDKhaki {
-  fill: darkkhaki
+  fill: darkkhaki;
+  background-color: darkkhaki;
 }
 .cDOrange {
   fill: darkorange;
+  background-color: darkorange;
 }
 .cDOrchid {
   fill: darkorchid;
+  background-color: darkorchid;
 }
 .cDRed {
   fill: darkred;
+  background-color: darkred;
 }
 .cDSGreen {
   fill: darkseagreen;
+  background-color: darkseagreen;
 }
 .cDSBlue {
   fill: darkslateblue;
+  background-color: darkslateblue;
 }
 .cDSGray {
-  fill: darkslategray
+  fill: darkslategray;
+  background-color: darkslategray;
 }
 .cDTurquoise{
   fill: darkturquoise;
+  background-color: darkturquoise;
 }
 .cDViolet {
   fill: darkviolet;
+  background-color: darkviolet;
 }
 .cDSkyBlue {
   fill: deepskyblue;
+  background-color: deepskyblue;
 }
 .cDPink {
   fill: deeppink;
+  background-color: deeppink;
 }
 .cGreenYellow {
   fill: greenyellow;
+  background-color: greenyellow;
 }
 .cOliveDrab {
   fill: olivedrab;
+  background-color: olivedrab;
 }
 
