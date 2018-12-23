@@ -26,6 +26,14 @@
   text-align: left;
 }
 
+.w-20 {
+  width: 20%;
+}
+
+.w-200px {
+  width: 200px;
+}
+
 .strokeRed {
   stroke: firebrick;
 }
@@ -57,8 +65,8 @@
   background-color: darkorange;
 }
 .cDOrchid {
-  fill: darkorchid;
-  background-color: darkorchid;
+  fill: mediumorchid;
+  background-color: mediumorchid;
 }
 .cDRed {
   fill: darkred;
@@ -101,3 +109,122 @@
   background-color: olivedrab;
 }
 
+.cDBlue-outline {
+  background: white;
+  border-color: darkblue;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDCyan-outline {
+  background: white;
+  border-color: darkcyan;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDGold-outline {
+  background: white;
+  border-color: darkgoldenrod;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDGreen-outline {
+  background: white;
+  border-color: darkgreen;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDKhaki-outline {
+  background: white;
+  border-color: darkkhaki;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDOrange-outline {
+  background: white;
+  border-color: darkorange;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDOrchid-outline {
+  background: white;
+  border-color: mediumorchid;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDRed-outline {
+  background: white;
+  border-color: darkred;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDSGreen-outline {
+  background: white;
+  border-color: darkseagreen;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDSBlue-outline {
+  background: white;
+  border-color: darkslateblue;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDSGray-outline {
+  background: white;
+  border-color: darkslategray;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDTurquois-outline {
+  background: white;
+  border-color: darkturquoise;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDViolet-outline {
+  background: white;
+  border-color: darkviolet;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDSkyBlue-outline {
+  background: white;
+  border-color: deepskyblue;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cDPink-outline {
+  background: white;
+  border-color: deeppink;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cGreenYellow-outline {
+  background: white;
+  border-color: greenyellow;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}
+.cOliveDrab-outline {
+  background: white;
+  border-color: olivedrab;
+  border-style: solid;
+  border-width: 1px;
+  color: gray;
+}

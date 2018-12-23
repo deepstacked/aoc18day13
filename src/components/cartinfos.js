@@ -5,7 +5,9 @@ import { Badge } from 'reactstrap';
 
 function makeCartInfo(cart, cartNumber){    
     let {x,  y, css, status, direction, nextTurn } = cart;
-    css += ' mr-1 mb-2';
+    
+    if(status === common.CARTSTATUS.crashed) css += '-outline mr-1 mb-2 w-200px';
+    else css += ' mr-1 mb-2 w-200px';
     return <Badge key={common.generateUniqueId()} className={css}>ID:{cartNumber} ({x}, {y}) {direction} {nextTurn} {status}</Badge>;
 }
 
