@@ -141,16 +141,8 @@ function sortCarts(a, b){
     return 0;    
 }
 
-function findOccupiedTracks(tracks, carts){
-    let cartsleft = cartsAlive(carts);
-    if(cartsleft.length > 0){
-        return cartsleft.map(cart => {let track = tracks[cart.y][cart.x]; return {x: track.x, y: track.y} });       
-    }
-    return {x: 0, y: 0};
-}
-
 function cartsAlive(carts){
-    return carts.filter(cart => cart.status === common.CARTSTATUS.alive).length;
+    return carts.filter(cart => cart.status === common.CARTSTATUS.alive);
 }
 function cartsAliveCount(carts){
     return cartsAlive(carts).length;
@@ -182,7 +174,8 @@ function doOneTurn(tracks, carts, collisions, crashoption){
             let occupied = otherCartIdx !== -1;
             if(occupied){
                 cart.status = common.CARTSTATUS.crashed;
-                console.log(newcollisions, nextTrack);
+                cart.x = nextTrack.x;
+                cart.y = nextTrack.y;                
                 newcollisions.push({id: common.generateUniqueId(), x: nextTrack.x, y: nextTrack.y, cartid: cart.id});
                 if(crashoption === 'first'){
                     break;
@@ -214,6 +207,30 @@ function doOneTurn(tracks, carts, collisions, crashoption){
     }
 
     return {movedCarts, newcollisions};
+}
+
+export function doAllNoDelay(tracks, carts){
+    let collisions = [];
+    
+    let {movedCarts, newcollisions} = doOneTurn(tracks, carts, collisions, 'last');
+    let loopidx = 0
+    let cartCount = cartsAliveCount(movedCarts);
+
+    while(cartCount > 1){
+        loopidx++;
+        ({movedCarts, newcollisions} = doOneTurn(tracks, movedCarts, newcollisions, 'last'));
+        cartCount = cartsAliveCount(movedCarts);
+    }
+
+    if(newcollisions.length > 0 || cartCount === 1) {
+        return {
+            type: actionTypes.WARN_ABOUT_COLLISION,
+            collisions: newcollisions,
+            carts: movedCarts,
+            cartsalive: cartCount,
+            turn: loopidx
+        }
+    }
 }
 
 export function loadInitialData(){

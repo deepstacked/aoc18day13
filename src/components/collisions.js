@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as common from '../constants';
 
-function makeCollisions(collision){    
+function makeCollisions(collision){
     return <use key={common.generateUniqueId()} className='strokeRed' href="#collision" x={(collision.x+1) * 10} y={(collision.y+1) * 10} />    
 }
 
