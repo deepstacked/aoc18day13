@@ -19,7 +19,7 @@ function makeTrackRow(y, yrowTracks){
 class Tracks extends Component {
 
     render () {        
-        let {tracks} = this.props;
+        let { tracks } = this.props;
         let y = 0;
         return (
             <svg id='tracks' key={common.generateUniqueId()} >

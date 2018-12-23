@@ -5,6 +5,7 @@ import Tracks from './components/tracks';
 import Carts from './components/carts';
 import Collisions from './components/collisions';
 import CartInfos from './components/cartinfos';
+import TrackInfo from './components/trackinfo';
 import * as actions  from './actions';
 import { Button, Container, Row, Badge } from 'reactstrap';
 
@@ -14,8 +15,8 @@ class App extends Component {
     this.props.dispatch(actions.loadInitialData());
   }
   componentDidUpdate(prevProps){
-    let { collisions, cartsalive, running, timer, crashoption, turn } = this.props;
-    if(turn > 10000) console.log(prevProps, this.props);
+    let { collisions, cartsalive, running, timer, crashoption } = this.props;
+
     if(collisions.length > 0 && prevProps.collisions.length === 0 && running === true && crashoption === CRASHOPTIONS.first){
       this.props.dispatch(actions.stopTimer(timer));
     } else if (cartsalive === 1 && running === true && crashoption === CRASHOPTIONS.last){
@@ -52,22 +53,23 @@ class App extends Component {
   }
   render() {
     
-    let {tracks, running, turn} = this.props;    
+    let {tracks, running, tick} = this.props;    
     if(typeof tracks === 'undefined') return null;
     return (
-      <div className="App">
+      <div className='App'>
       <Container>
-        <Row className="pt-2 w-100 px-4 px-xl-0 ">
-          <Button key="runone" type="button" className="btn-primary mr-3" disabled={running} onClick={this.onAdvanceRun}>Run once</Button>
-          <Button key="startTimerFirst" type="button" className="btn-primary mr-3" disabled={running} onClick={this.onStartRun}>Run till First Crash</Button>
-          <Button key="startTimerLast" type="button" className="btn-primary mr-3" disabled={running} onClick={this.onStartRunTillLast}>Run till Last Crash</Button>
-          <Button key="stopTimer" type="button" className="btn-danger mr-3" disabled={!running} onClick={this.onStopRun}>Stop</Button>
-          <Button key="resetCarts" type="button" className="btn-info mr-1" disabled={running || turn === 0} onClick={this.onResetCartsCollisions}>Reset</Button>
-          <Badge color={running ? 'success' : 'primary'}>{turn}</Badge>
+        <Row className='pt-2 w-100 px-4 px-xl-0 '>
+          <Button key='runone' type='button' className='btn-primary mr-3' disabled={running} onClick={this.onAdvanceRun}>Run one tick</Button>
+          <Button key='startTimerFirst' type='button' className='btn-primary mr-3' disabled={running} onClick={this.onStartRun}>Run till First Crash</Button>
+          <Button key='startTimerLast' type='button' className='btn-primary mr-3' disabled={running} onClick={this.onStartRunTillLast}>Run till Last Crash</Button>
+          <Button key='stopTimer' type='button' className='btn-danger mr-3' disabled={!running} onClick={this.onStopRun}>Stop</Button>
+          <Button key='resetCarts' type='button' className='btn-info mr-1' disabled={running || tick === 0} onClick={this.onResetCartsCollisions}>Reset</Button>
+          
         </Row>
-        <Row className="pt-2 w-100 px-4 px-xl-0 "><CartInfos /></Row>
+        <Row><Badge className='mt-2 mr-2' color={running ? 'success' : 'primary'}>Ticks: {tick}</Badge><TrackInfo /></Row>
+        <Row className='pt-2 w-100 px-4 px-xl-0 '><CartInfos /></Row>
       </Container>
-      <svg id="overallApp" key="overallApp" viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
+      <svg id='overallApp' key='overallApp' viewBox='0 0 1600 1600' xmlns='http://www.w3.org/2000/svg'>
         <Tracks />
         <Carts />
         <Collisions />
@@ -77,12 +79,11 @@ class App extends Component {
   }
 }
 
-function mapStateToProps(state){
-  if(state.turn > 10000) console.log(state);
+function mapStateToProps(state){  
   return {
     carts: state.carts,
     tracks: state.tracks,    
-    turn: state.turn,
+    tick: state.turn,
     collisions: state.collisions,    
     running: state.running,
     timer: state.timer,
