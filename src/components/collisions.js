@@ -7,12 +7,12 @@ function makeCollisions(collision){
 }
 
 class Collisions extends Component {
-
-    componentDidUpdate(prevProps){
+    shouldComponentUpdate(nextProps){
+        // collisions get returned from the call regardless of any updates. so filter out renders that shouldn't happen.
+        return nextProps.collisions.length !== this.props.collisions.length;
     }
 
     render () {
-        console.log("collisions::render");
         let { collisions } = this.props;
         if(typeof collisions === 'undefined') return null;
         return (

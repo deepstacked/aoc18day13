@@ -1,5 +1,4 @@
 import * as actionTypes from '../actiontypes';
-import { createSelector } from 'reselect';
 
 const initialState = {
     carts: [],
@@ -31,4 +30,4 @@ export default function cartReducer(state = initialState, action){
     }    
 }
 
-const getCollisions = state => state.collisions;
+
