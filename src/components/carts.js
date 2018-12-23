@@ -38,22 +38,24 @@ class Carts extends Component {
         let { carts } = this.props;        
         return (            
             <svg id="svgcarts" key={common.generateUniqueId()}>
-                <g id='cartup'>           
-                    <rect x='1' y='1.25' height='8.75' width='8' />
-                    <rect x='1' y='0' height='0.5' width='8' />
-                </g>
-                <g id='cartdown'>
-                    <rect x='1' y='0' height='8.75' width='8' />
-                    <rect x='1' y='9.5' height='0.5' width='8' />
-                </g>
-                <g id='cartleft'>                
-                    <rect x='1.25' y='1' height='8' width='8.75' />
-                    <rect x='0' y='1' height='8' width='0.5' />      
-                </g>
-                <g id='cartright'>
-                    <rect x='0' y='1' height='8' width='8.75' />
-                    <rect x='9.5' y='1' height='8' width='0.5' />  
-                </g>                
+                <defs>
+                    <g id='cartup'>           
+                        <rect x='1' y='1.25' height='8.75' width='8' />
+                        <rect x='1' y='0' height='0.5' width='8' />
+                    </g>
+                    <g id='cartdown'>
+                        <rect x='1' y='0' height='8.75' width='8' />
+                        <rect x='1' y='9.5' height='0.5' width='8' />
+                    </g>
+                    <g id='cartleft'>                
+                        <rect x='1.25' y='1' height='8' width='8.75' />
+                        <rect x='0' y='1' height='8' width='0.5' />      
+                    </g>                
+                    <g id='cartright'>
+                        <rect x='0' y='1' height='8' width='8.75' />
+                        <rect x='9.5' y='1' height='8' width='0.5' />  
+                    </g>
+                </defs>
             {
                 carts.map(cart => {return makeCart(cart)})
             }

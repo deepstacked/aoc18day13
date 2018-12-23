@@ -17,10 +17,12 @@ class Collisions extends Component {
         if(typeof collisions === 'undefined') return null;
         return (
             <svg id="collisions" key={common.generateUniqueId()} >
-                <g id='collision'>
-                    <line x1="0" y1="0" x2="10" y2="10" />
-                    <line x1="0" y1="10" x2="10" y2="0" />
-                </g>                
+                <defs>
+                    <g id='collision'>
+                        <line x1="0" y1="0" x2="10" y2="10" />
+                        <line x1="0" y1="10" x2="10" y2="0" />
+                    </g>
+                </defs>
             {
                 collisions.map(collision => {return makeCollisions(collision)})
             }
