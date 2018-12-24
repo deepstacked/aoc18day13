@@ -131,12 +131,3 @@ export function getMoveInstruction(cartDirection){
             break;
     }
 }
-
-
-export class CartCollisionException {
-    constructor(x, y) {
-        this.value = [{ x, y }];
-        this.message = `collison at (${x},${y})`;
-        this.toString = this.message;
-    }
-}

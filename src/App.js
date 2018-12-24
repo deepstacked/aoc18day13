@@ -59,7 +59,7 @@ class App extends Component {
     this.props.dispatch(actions.doAllNoDelay(tracks, carts))
   }
 
-  // clears the time
+  // clears the timer
   onStopRun = () => {
     let { timer } = this.props;
     this.props.dispatch(actions.stopTimer(timer));
