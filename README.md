@@ -6,19 +6,20 @@ This is a project in solving Advent of Code 2018 day 13 part 1 and part 2 [AoC20
 
 ### Dependencies:
 
-"babel-cli": "^6.26.0",...
-"babel-preset-react-app": "^3.1.2",...
-"bootstrap": "^4.1.3",...
-~~"moment": "^2.23.0",~~...
-"react": "^16.6.3",...
-"react-devtools": "^3.4.3",...
-"react-dom": "^16.6.3",...
-"react-redux": "^6.0.0",...
-"react-scripts": "2.1.1",...
-"reactstrap": "^6.5.0",...
-"redux": "^4.0.1",...
-"redux-devtools-extension": "^2.13.7",...
-~~"reselect": "^4.0.0"~~...
+```
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "bootstrap": "^4.1.3",    
+    "react": "^16.6.3",
+    "react-devtools": "^3.4.3",
+    "react-dom": "^16.6.3",
+    "react-redux": "^6.0.0",
+    "react-scripts": "2.1.1",
+    "reactstrap": "^6.5.0",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.7",
+    
+```
 
 ### Things I learned or improved on in this project:
 
@@ -37,9 +38,10 @@ This is a project in solving Advent of Code 2018 day 13 part 1 and part 2 [AoC20
 
 ### UI
 *Start state UI:
-![start state UI](https://github.com/deepstacked/aoc18day13/mad_carts_solved.png), "Start state UI")
+
+![start state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_solved.png), "Start state UI")
 *Solved state UI:
-![solved state UI](https://github.com/deepstacked/aoc18day13/mad_carts_solved.png), "Solved state UI")
+![solved state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_solved.png), "Solved state UI")
 
 
 ### Fun things:
