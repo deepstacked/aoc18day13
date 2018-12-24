@@ -39,9 +39,9 @@ This is a project in solving Advent of Code 2018 day 13 part 1 and part 2 [AoC20
 ### UI
 *Start state UI:
 
-![start state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_start.png, "Start state UI")
+![start state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_start.png "Start state UI")
 *Solved state UI:
-![solved state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_solved.png, "Solved state UI")
+![solved state UI](https://github.com/deepstacked/aoc18day13/blob/master/mad_carts_solved.png "Solved state UI")
 
 
 ### Fun things:
