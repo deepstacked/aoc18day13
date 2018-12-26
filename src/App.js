@@ -78,11 +78,11 @@ class App extends Component {
       <Container>
         <Row className='pt-2 w-100 px-4 px-xl-0 '>
           <Button key='runone' type='button' className='mr-3' disabled={running} onClick={this.onAdvanceRun}>Run one tick</Button>
-          <Button key='runall' type='button' className='mr-3' disabled={running} onClick={this.onStartRunNoDelay}>Run No Delay</Button>
-          <Button key='startTimerFirst' type='button' className='ml-4 mr-2' disabled={running} onClick={this.onStartRun}>Run till First Crash</Button>
-          <Button key='startTimerLast' type='button' className='mr-2' disabled={running} onClick={this.onStartRunTillLast}>Run till Last Crash</Button>          
-          <Button key='stopTimer' type='button' color='danger' className='mr-4' disabled={!running} onClick={this.onStopRun}>Stop</Button>
-          <Button key='resetCarts' type='button' color='success' className='mr-1' disabled={running || tick === 0} onClick={this.onResetCartsCollisions}>Reset</Button>          
+          <Button key='runall' type='button' className='mr-3' disabled={running} onClick={this.onStartRunNoDelay}>Solve No Delay</Button>
+          <Button key='startTimerFirst' type='button' className='ml-3 mr-2' disabled={running} onClick={this.onStartRun}>AutoRun till First Crash</Button>
+          <Button key='startTimerLast' type='button' className='mr-2' disabled={running} onClick={this.onStartRunTillLast}>AutoRun till Last Crash</Button>          
+          <Button key='stopTimer' type='button' color='danger' className='mr-4' disabled={!running} onClick={this.onStopRun}>Stop AutoRun</Button>
+          <Button key='resetCarts' type='button' color='success' className='mr-1' disabled={running || tick === 0} onClick={this.onResetCartsCollisions}>Reset Carts</Button>          
         </Row>
         <Row><Badge className='mt-2 mr-2' color={running ? 'success' : 'primary'}>Ticks: {tick}</Badge><TrackInfo /></Row>
         <Row className='pt-2 w-100 px-4 px-xl-0 '><CartInfos /></Row>
