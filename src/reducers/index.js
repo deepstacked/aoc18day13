@@ -24,7 +24,7 @@ export default function cartReducer(state = initialState, action){
         case actionTypes.STOP_TIMER_RUN:
             return {...state, timer: action.timer, running: action.running};
         case actionTypes.RESET_CARTS_COLLISIONS:
-            return {...state, carts: action.carts, collisions: action.collisions, turn: action.turn};
+            return {...state, carts: action.carts, collisions: action.collisions, turn: action.turn, cartsalive: action.cartsalive};
         default:
             return {...state};
     }    
