@@ -10,7 +10,7 @@ import * as actions  from './actions';
 import { Button, Container, Row, Badge } from 'reactstrap';
 
 const CRASHOPTIONS = {first: 'first', last: 'last'};
-class App extends Component {
+export class App extends Component {
   componentDidMount(){
     this.props.dispatch(actions.loadInitialData());
   }
